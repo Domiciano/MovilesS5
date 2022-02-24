@@ -15,6 +15,7 @@ import edu.co.icesi.moviless3.fragments.HomeFragment
 
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var container: ConstraintLayout
     private lateinit var navigator: BottomNavigationView
     private lateinit var toolbar: Toolbar
