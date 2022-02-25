@@ -11,45 +11,56 @@ import android.widget.EditText
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import edu.co.icesi.moviless3.R
+import edu.co.icesi.moviless3.databinding.FragmentContentBinding
+import edu.co.icesi.moviless3.lists.Post
 import edu.co.icesi.moviless3.model.User
 
 
-class ContentFragment : Fragment(){
+class ContentFragment : Fragment() {
 
 
     //Observers
-    var listener:OnUserDataChangedListener? = null
-
+    var listener: OnUserDataChangedListener? = null
+    var listenerPost : OnPostAddedListener? = null
 
     //Views
-    private lateinit var nameET: EditText
-    private lateinit var careerET: EditText
-    private lateinit var descriptionET: EditText
     private val profileButtons = ArrayList<ImageButton>();
-    private lateinit var editInfoBtn: Button
-
+    private lateinit var binding: FragmentContentBinding
 
     //STATE
-    var photoID:Int=0
+    var photoID: Int = 0
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         // Inflate the layout for this fragment
-        val root = inflater.inflate(R.layout.fragment_content, container, false)
+        binding = FragmentContentBinding.inflate(inflater, container, false)
+        val root = binding.root
 
         //Referenciar views
-        nameET = root.findViewById(R.id.nameET)
-        careerET = root.findViewById(R.id.careerET)
-        descriptionET = root.findViewById(R.id.descriptionET)
-        profileButtons.add(root.findViewById(R.id.profilePhotoBtn1))
-        profileButtons.add(root.findViewById(R.id.profilePhotoBtn2))
-        profileButtons.add(root.findViewById(R.id.profilePhotoBtn3))
-        profileButtons.add(root.findViewById(R.id.profilePhotoBtn4))
+        profileButtons.add(binding.profilePhotoBtn1)
+        profileButtons.add(binding.profilePhotoBtn2)
+        profileButtons.add(binding.profilePhotoBtn3)
+        profileButtons.add(binding.profilePhotoBtn4)
 
-        editInfoBtn = root.findViewById(R.id.editInfoBtn)
+
 
         profileButtons.forEach { it.setOnClickListener(::onClick) }
 
-        editInfoBtn.setOnClickListener(::onClick)
+        binding.editInfoBtn.setOnClickListener(::onClick)
+
+
+        //RecyclerView
+        binding.publishBtn.setOnClickListener {
+            val comment = binding.commentET.text.toString()
+            val post = Post(comment)
+            listenerPost?.let {
+                it.onPostAdded(post)
+            }
+        }
+
         return root
     }
 
@@ -57,7 +68,7 @@ class ContentFragment : Fragment(){
         //La variable v que recibe este método es el view al que se le hace click
 
         profileButtons.forEach { it.setBackgroundColor(Color.BLACK) }
-        v.setBackgroundColor(Color.rgb(83, 66,210))
+        v.setBackgroundColor(Color.rgb(83, 66, 210))
 
         when (v.id) {
             R.id.profilePhotoBtn1 -> {
@@ -73,10 +84,10 @@ class ContentFragment : Fragment(){
                 photoID = R.drawable.face4
             }
             R.id.editInfoBtn -> {
-                val name = nameET.text.toString()
-                val carrer = careerET.text.toString()
-                val description = descriptionET.text.toString()
-                val user = User(name, carrer, 0,0, description, photoID)
+                val name = binding.nameET.text.toString()
+                val carrer = binding.careerET.text.toString()
+                val description = binding.descriptionET.text.toString()
+                val user = User(name, carrer, 0, 0, description, photoID)
                 listener?.let {
                     it.onUserDataChanged(user)
                 }
@@ -85,8 +96,12 @@ class ContentFragment : Fragment(){
         }
     }
 
-    interface OnUserDataChangedListener{
+    interface OnUserDataChangedListener {
         fun onUserDataChanged(user: User)
+    }
+
+    interface OnPostAddedListener {
+        fun onPostAdded(post: Post)
     }
 
     companion object {

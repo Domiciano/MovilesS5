@@ -9,12 +9,14 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import edu.co.icesi.moviless3.MainActivity
 import edu.co.icesi.moviless3.R
+import edu.co.icesi.moviless3.lists.Post
 import edu.co.icesi.moviless3.lists.PostAdapter
 import edu.co.icesi.moviless3.model.User
 
 
-class HomeFragment : Fragment(), ContentFragment.OnUserDataChangedListener {
+class HomeFragment : Fragment(), ContentFragment.OnUserDataChangedListener, ContentFragment.OnPostAddedListener {
 
     private lateinit var profileImage: ImageView
     private lateinit var profileName: TextView
@@ -24,7 +26,7 @@ class HomeFragment : Fragment(), ContentFragment.OnUserDataChangedListener {
 
     //STATE
     var user = User("Andres Andrade","Ingeniero Telemático", 123, 1823, "Lorem Ipsum", R.drawable.face1)
-
+    private var adapter = PostAdapter()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -32,8 +34,10 @@ class HomeFragment : Fragment(), ContentFragment.OnUserDataChangedListener {
         profileImage = root.findViewById(R.id.profileImage)
         profileName = root.findViewById(R.id.profileName)
         profileCareer = root.findViewById(R.id.profileCareer)
+
         profilePostsRV = root.findViewById(R.id.profilePostsRV)
-        profilePostsRV.adapter = PostAdapter()
+        //Poblar el estado de la lista
+        profilePostsRV.adapter = adapter
         profilePostsRV.layoutManager = LinearLayoutManager(context)
         profilePostsRV.setHasFixedSize(false)
 
@@ -45,6 +49,9 @@ class HomeFragment : Fragment(), ContentFragment.OnUserDataChangedListener {
         profileCareer.text = user.career
         profileDescription.text = user.description
         profileImage.setImageResource(user.photoID)
+
+
+        val myactivity = activity as MainActivity
 
 
         return root
@@ -60,5 +67,10 @@ class HomeFragment : Fragment(), ContentFragment.OnUserDataChangedListener {
         //NUNCA !!!!!!!! Usar la UI
         this.user = user
 
+    }
+
+    override fun onPostAdded(post: Post) {
+        //!!NADA DE UI
+        this.adapter.posts.add(post)
     }
 }

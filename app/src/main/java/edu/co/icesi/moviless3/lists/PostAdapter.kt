@@ -9,14 +9,8 @@ class PostAdapter : RecyclerView.Adapter<PostVH>() {
 
     var posts = ArrayList<Post>()
 
-    init {
-        posts.add(Post("Este es mi primer comentario"))
-        posts.add(Post("Este es mi segundo comentario"))
-        posts.add(Post("Este es mi segundo comentario"))
-        posts.add(Post("Este es mi segundo comentario"))
-        posts.add(Post("Este es mi segundo comentario"))
-        posts.add(Post("Este es mi segundo comentario"))
-    }
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostVH {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.postrow, parent, false)

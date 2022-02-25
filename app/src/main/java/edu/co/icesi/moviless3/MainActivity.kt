@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         //Relaciones
         contentFragment.listener = homeFragment
+        contentFragment.listenerPost = homeFragment
 
         //Configurar la barra superior
         toolbar.setTitleTextColor(Color.WHITE)
