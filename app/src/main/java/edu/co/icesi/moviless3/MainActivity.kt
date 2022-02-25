@@ -33,9 +33,13 @@ class MainActivity : AppCompatActivity() {
         toolbar = findViewById(R.id.toolbar)
         container = findViewById(R.id.container)
         navigator = findViewById(R.id.navigator)
+
         homeFragment = HomeFragment.newInstance()
         contentFragment = ContentFragment.newInstance()
         configFragment = ConfigFragment.newInstance()
+
+        //Relaciones
+        contentFragment.listener = homeFragment
 
         //Configurar la barra superior
         toolbar.setTitleTextColor(Color.WHITE)

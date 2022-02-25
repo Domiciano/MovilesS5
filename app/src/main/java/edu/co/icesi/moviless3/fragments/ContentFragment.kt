@@ -11,15 +11,26 @@ import android.widget.EditText
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import edu.co.icesi.moviless3.R
+import edu.co.icesi.moviless3.model.User
 
 
 class ContentFragment : Fragment(){
+
+
+    //Observers
+    var listener:OnUserDataChangedListener? = null
+
+
     //Views
     private lateinit var nameET: EditText
     private lateinit var careerET: EditText
     private lateinit var descriptionET: EditText
     private val profileButtons = ArrayList<ImageButton>();
     private lateinit var editInfoBtn: Button
+
+
+    //STATE
+    var photoID:Int=0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
@@ -50,21 +61,32 @@ class ContentFragment : Fragment(){
 
         when (v.id) {
             R.id.profilePhotoBtn1 -> {
-
+                photoID = R.drawable.face1
             }
             R.id.profilePhotoBtn2 -> {
-
+                photoID = R.drawable.face2
             }
             R.id.profilePhotoBtn3 -> {
-
+                photoID = R.drawable.face3
             }
             R.id.profilePhotoBtn4 -> {
-
+                photoID = R.drawable.face4
             }
             R.id.editInfoBtn -> {
+                val name = nameET.text.toString()
+                val carrer = careerET.text.toString()
+                val description = descriptionET.text.toString()
+                val user = User(name, carrer, 0,0, description, photoID)
+                listener?.let {
+                    it.onUserDataChanged(user)
+                }
 
             }
         }
+    }
+
+    interface OnUserDataChangedListener{
+        fun onUserDataChanged(user: User)
     }
 
     companion object {

@@ -19,8 +19,8 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
         android:background="#673AB7"
         app:itemIconTint="@drawable/customselector"
         app:itemTextColor="@drawable/customselector"
